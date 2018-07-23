@@ -80,7 +80,7 @@ gChrome() {
 }
 
 basic() {
-packages="curl wget vim apt-transport-https ca-certificates software-properties-common"
+packages="curl wget vim apt-transport-https ca-certificates software-properties-common git"
 
    echo "Installing basic packages..."
    sudo apt install -y $packages
