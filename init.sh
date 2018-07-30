@@ -36,18 +36,20 @@ help() {
     echo "             $0 update"
     echo "             $0 tools"
     echo ""
+    echo "NOTE: tools option will open a menu to choose which tool you want to install."
+    echo ""
 }
 
 tools() {
    echo ""
    echo "#  Tools Menu  #"
    echo ""
-   echo "Choose an option: "
    echo "1. Install Google Chrome."
    echo "2. Install zsh and oh-my-zsh."
    echo "3. Install Spotify."
    echo "4. Install Gnome Tweak Tool."
-   read -p OPTION
+   echo "5. Install tilix and pokemon terminal."
+   read -p "Choose an option: " OPTION
 
    case "$OPTION" in
 	   1) 
@@ -66,6 +68,19 @@ tools() {
 	          gnomeTool
 	   ;;
 
+           5)
+		  echo "(WARNING!) This will be to install python pip 3i.6!"
+		  sudo apt-get install python3-pip
+		  sudo apt install tilix
+		  sudo pip3 install git+https://github.com/LazoCoder/Pokemon-Terminal.git
+	   ;; 
+
+           *) #fin de las opciones
+
+		   echo "Not valid option!"
+		   exit 1 
+	   ;;
+
    esac 
 	
 }
@@ -80,7 +95,7 @@ gChrome() {
 }
 
 basic() {
-packages="curl wget vim apt-transport-https ca-certificates software-properties-common git"
+packages="curl wget vim apt-transport-https ca-certificates software-properties-common"
 
    echo "Installing basic packages..."
    sudo apt install -y $packages
