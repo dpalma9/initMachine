@@ -17,6 +17,7 @@
 # VARS BLOCK
 
 OPTION=$1
+root_path=`pwd`
 
 #**************
 
@@ -26,7 +27,7 @@ help() {
     echo "#  Help Menu  #"
     echo "#####################################"
     echo ""
-    echo "Uso: $0 [update|tools]" >&2
+    echo "Uso: $0 [update|tools|baic|custom]" >&2
     echo ""
     echo "         -h, -H, --help                 Execution help"
     echo ""
@@ -40,7 +41,41 @@ help() {
     echo ""
 }
 
+custom() {
+
+  echo ""
+  echo"# Customize menu  #"
+  echo ""
+  echo "1. Numix Gtk theme and icon pack."
+  echo "2. X-Arc theme."
+  read -p "Choose an option: " OPTION
+
+  case "$OPTION" in
+           1)
+		sudo add-apt-repository ppa:numix/ppa
+		sudo apt-get update
+		sudo apt-get install numix-gtk-theme numix-icon-theme-circle
+	   ;;
+
+           2)
+		echo "WARNING: Need to install gnome-themes-standard package. Installing..."
+		apt install gnome-themes-standard
+		xarcV=1.4.7
+		wget https://gitlab.com/LinxGem33/X-Arc-White/uploads/26bccc81678392584149afa3167f8e78/osx-arc-collection_"$xarcV"_amd64.deb
+                dpkg -i $root_path/osx-arc-collection_"$xarcV"_amd64.deb
+		rm -rf $root_path/osx-arc-collection_"$xarcV"_amd64.deb
+	   ;;
+
+           *) #end of options
+	           echo "Not valid option!"
+                   exit 1
+           ;;
+
+   esac
+}
+
 tools() {
+
    echo ""
    echo "#  Tools Menu  #"
    echo ""
@@ -97,7 +132,7 @@ gChrome() {
 basic() {
 packages="curl wget vim apt-transport-https ca-certificates software-properties-common"
 
-   echo "Installing basic packages..."
+   echo "Installing packages: $packages"
    sudo apt install -y $packages
 }
 
@@ -149,6 +184,11 @@ case "$OPTION" in
 
     basic)
         basic
+	break
+    ;;
+
+    custom)
+	custom
 	break
     ;;
 
