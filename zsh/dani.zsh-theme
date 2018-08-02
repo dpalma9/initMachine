@@ -7,8 +7,8 @@ ZSH_THEME_GIT_PROMPT_CLEAN=""
 
 #source ~/kube-prompt.sh
 
-#PROMPT='%{$fg[cyan]%}%1~%{$reset_color%}%{$fg[red]%}|%{$reset_color%}$(git_prompt_info)%{$fg[cyan]%}=>%{$reset_color%} '
-PROMPT='$(_user_host)$(_kube_ps1)%{$fg[cyan]%}%2~%{$reset_color%}%{$fg[red]%}|%{$reset_color%}$(git_prompt_info)%{$fg[cyan]%}=>%{$reset_color%} '
+PROMPT='$(_user_host)%{$fg[cyan]%}%1~%{$reset_color%}%{$fg[red]%}|%{$reset_color%}$(git_prompt_info)%{$fg[cyan]%}=>%{$reset_color%} '
+#PROMPT='$(_user_host)$(_kube_ps1)%{$fg[cyan]%}%2~%{$reset_color%}%{$fg[red]%}|%{$reset_color%}$(git_prompt_info)%{$fg[cyan]%}=>%{$reset_color%} '
 RPROMPT='[%*]' #añadido por mi
 
 

@@ -27,7 +27,7 @@ help() {
     echo "#  Help Menu  #"
     echo "#####################################"
     echo ""
-    echo "Uso: $0 [update|tools|baic|custom]" >&2
+    echo "Uso: $0 [update|tools|basic|custom]" >&2
     echo ""
     echo "         -h, -H, --help                 Execution help"
     echo ""
@@ -74,6 +74,13 @@ custom() {
    esac
 }
 
+update() {
+
+  echo "WARNING: Upgrading system..."
+  apt update
+  apt -V upgrade
+}
+
 tools() {
 
    echo ""
@@ -84,6 +91,7 @@ tools() {
    echo "3. Install Spotify."
    echo "4. Install Gnome Tweak Tool."
    echo "5. Install tilix and pokemon terminal."
+   echo "6. Install Telegram."
    read -p "Choose an option: " OPTION
 
    case "$OPTION" in
@@ -109,6 +117,16 @@ tools() {
 		  sudo apt install tilix
 		  sudo pip3 install git+https://github.com/LazoCoder/Pokemon-Terminal.git
 	   ;; 
+
+           6)
+		  teleV=1.3.10
+		  echo "Installing Telegram."
+		  wget https://telegram.org/dl/desktop/linux/tsetup."teleV".tar.xz
+		  tar -Jxvf $root_path/tsetup."teleV".tar.xz
+		  mv $root_path/Telegram ~/
+		  rm tsetup."teleV".tar.xz
+
+           ;;
 
            *) #fin de las opciones
 
@@ -140,18 +158,22 @@ zsh() {
   
    echo "Initializing zsh env..."
    sudo apt-get install zsh
-   chsh -s $(which zsh)
+   command -v zsh | sudo tee -a /etc/shells
+   chsh -s "$(command -v zsh)" "${USER}"
    sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
-   cp ./zsh/.zshrc ~/.zshrc
-   cp ./zsh/dani.zsh-theme ~/.oh-my-zsh/themes/
+   cp $root_path/zsh/.zshrc ~/.zshrc
+   cp $root_path/zsh/dani.zsh-theme ~/.oh-my-zsh/themes/
+   chown $USER:$USER ~/.zshrc 
+   chown -R $USER:$USER ~/.oh-my-zsh
 }
 
 spotify() {
 
    echo "Installing Spotify..."
-   sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 931FF8E79F0876134EDDBDCCA87FF9DF48BF1C90
-   echo deb http://repository.spotify.com stable non-free | sudo tee /etc/apt/sources.list.d/spotify.list
-   sudo apt-get update && sudo apt install spotify-client
+   #sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 931FF8E79F0876134EDDBDCCA87FF9DF48BF1C90
+   #echo deb http://repository.spotify.com stable non-free | sudo tee /etc/apt/sources.list.d/spotify.list
+   #sudo apt-get update && sudo apt install spotify-client
+   snap install spotify
 }
 
 gnomeTool() {
