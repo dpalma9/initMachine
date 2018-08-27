@@ -105,3 +105,6 @@ alias docker_exit='docker ps -a | grep Exit | cut -d " " -f 1 | xargs docker rm'
 # Otros alias
 alias busca='find . -name'
 alias ok='ping 8.8.8.8'
+
+# Git alias
+alias gitlog='git log --oneline --graph --decorate --stat'
