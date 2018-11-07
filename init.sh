@@ -178,8 +178,13 @@ spotify() {
 
 gnomeTool() {
 
+  guide="https://itsfoss.com/gnome-shell-extensions/"
+
   echo "Installing Gnome Tweak Tool..."
-  sudo apt install gnome-tweak-tool
+  sudo apt install -y gnome-tweak-tool gnome-shell-extensions
+  echo "Don't forget to install the necessary plugin in Firefox or Chrome to install plugins."
+  sleep 2
+  echo "Visit $guide"
 }
 
 #**************
