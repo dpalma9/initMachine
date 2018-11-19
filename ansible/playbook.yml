@@ -1,0 +1,202 @@
+---
+- hosts: localhost
+  become: true
+
+  pre_tasks:
+    - name: PRETASK | Update apt cache 
+      apt: 
+        update_cache: yes 
+        cache_valid_time: 3600
+      when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+      tags:
+        - base_packages
+        - zsh
+        - vim
+        - docker
+        - chrome
+        - tmux
+
+    - name: PRETASK | Get username
+      shell: whoami
+      register: get_username
+      tags:
+        - zsh
+        - docker
+
+  tasks:
+  # Minimum packages
+  - name: BASE | Install base packages
+    package:
+      name: "{{ item }}"
+    with_items:
+      - vim
+      - git
+    tags:
+      - base_packages
+
+  # Sudo
+  - name: SUDO | Enable passwordless
+    lineinfile:
+      path: /etc/sudoers
+      state: present
+      regexp: '^%sudo'
+      line: '%sudo ALL=(ALL) NOPASSWD: ALL'
+      validate: 'visudo -cf %s'
+    tags:
+      - sudo
+
+  # Git
+  - name: GIT | Copy global config file
+    copy:
+      src: ../git/gitconfig
+      dest: ~/.gitconfig
+    become: false
+    tags:
+      - git
+
+  # zsh
+  - name: ZSH | Install zsh
+    package: 
+      name: zsh
+    tags:
+      - zsh
+
+  - name: ZSH | Install oh my zsh
+    git:
+      repo: https://github.com/robbyrussell/oh-my-zsh.git
+      dest: ~/.oh-my-zsh
+    become: false
+    tags:
+      - zsh
+
+  - name: ZSH | Copy zshrc
+    copy:
+      src: ../zsh/zshrc
+      dest: ~/.zshrc
+    become: false
+    tags:
+      - zsh
+
+  - name: ZSH | Config /bin/zsh in the user
+    user:
+      name: "{{ get_username.stdout }}"
+      shell: /bin/zsh
+    tags:
+      - zsh
+    
+  # VIM (Based on https://realpython.com/vim-and-python-a-match-made-in-heaven/)
+  - name: VIM | Install packages
+    package:
+      name: "{{ item }}"
+    with_items:
+      - fonts-powerline
+      - python-autopep8
+      - yapf
+    tags:
+      - vim
+
+  - name: VIM | Install Vundle
+    git:
+      repo: https://github.com/gmarik/Vundle.vim.git
+      dest: ~/.vim/bundle/Vundle.vim
+    become: false
+    tags:
+      - vim
+
+  - name: VIM | Copy vimrc
+    copy:
+      src: ./dotfiles/vimrc
+      dest: ~/.vimrc
+    become: false
+    tags:
+      - vim
+  
+  - name: VIM | Install vundle plugin
+    shell: vim +PluginInstall +qall
+    become: false
+    tags:
+      - vim
+
+  - name: VIM | Clean all old vundle plugin
+    shell: vim +PluginClean +qall
+    become: false
+    tags:
+      - vim
+ 
+  - name: VIM | Fix YouCompleteMe
+    command: ./install.py
+    args:
+      chdir: ~/.vim/bundle/YouCompleteMe
+      creates: ~/.vim/bundle/YouCompleteMe/third_party/ycmd/third_party/cregex/regex_2/_regex.so
+    become: false
+    tags:
+      - vim
+
+  - name: VIM | Install powerline for vim
+    pip:
+      name: powerline-status
+      executable: pip3
+      extra_args: --user
+    become: false
+    tags:
+      - vim
+
+  # Docker
+  - name: DOCKER | Remove all docker packages
+    package:
+      name: "{{ item }}"
+    with_items:
+      - docker
+      - docker.io
+    tags:
+      - docker
+
+  - name: DOCKER | Add Docker GPG Key
+    apt_key:
+      url: https://download.docker.com/linux/ubuntu/gpg
+    tags:
+      - docker
+
+  - name: DOCKER | Add Docker Repository
+    apt_repository:
+      repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu "{{ansible_distribution_release}}" stable  
+    tags:
+      - docker
+
+  - name: DOCKER | Install packages
+    package:
+      name: "{{ item }}"
+      update_cache: yes
+    with_items:
+      - apt-transport-https
+      - ca-certificates
+      - curl
+      - software-properties-common
+      - docker-ce
+    tags:
+      - docker
+
+  - name: DOCKER | Add user to docker group
+    user:
+      name: "{{ get_username.stdout }}"
+      groups: docker
+      append: yes
+    tags:
+      - docker
+
+  # Install Chrome
+  - name: CHROME | Install dependencies
+    package:
+      name: "{{ item }}"
+    with_items:
+      - libxss1 
+      - libappindicator1 
+      - libindicator7
+    tags:
+      - chrome
+
+  - name: CHROME | Install chrome
+    apt:
+      deb: https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+    tags:
+      - chrome

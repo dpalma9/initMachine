@@ -77,8 +77,8 @@ custom() {
 update() {
 
   echo "WARNING: Upgrading system..."
-  apt update
-  apt -V upgrade
+  sudo apt update
+  sudo apt -V upgrade
 }
 
 tools() {
@@ -148,7 +148,7 @@ gChrome() {
 }
 
 basic() {
-packages="curl wget vim apt-transport-https ca-certificates software-properties-common gitk"
+packages="curl wget vim vim-gnome apt-transport-https ca-certificates software-properties-common gitk"
 
    echo "Installing packages: $packages"
    sudo apt install -y $packages
@@ -161,7 +161,7 @@ zsh() {
    command -v zsh | sudo tee -a /etc/shells
    chsh -s "$(command -v zsh)" "${USER}"
    sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
-   cp $root_path/zsh/.zshrc ~/.zshrc
+   cp $root_path/zsh/zshrc ~/.zshrc
    cp $root_path/zsh/dani.zsh-theme ~/.oh-my-zsh/themes/
    chown $USER:$USER ~/.zshrc 
    chown -R $USER:$USER ~/.oh-my-zsh
