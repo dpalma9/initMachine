@@ -92,6 +92,7 @@ tools() {
    echo "4. Install Gnome Tweak Tool."
    echo "5. Install tilix and pokemon terminal."
    echo "6. Install Telegram."
+   echo "7. Install vundle (vim plugin)."
    read -p "Choose an option: " OPTION
 
    case "$OPTION" in
@@ -123,10 +124,14 @@ tools() {
 		  echo "Installing Telegram."
 		  wget https://telegram.org/dl/desktop/linux/tsetup."teleV".tar.xz
 		  tar -Jxvf $root_path/tsetup."teleV".tar.xz
-		  mv $root_path/Telegram ~/
+		  mv $root_path/Telegram $HOME
 		  rm tsetup."teleV".tar.xz
 
            ;;
+
+           7)
+		  vundle
+	   ;;
 
            *) #fin de las opciones
 
@@ -161,10 +166,21 @@ zsh() {
    command -v zsh | sudo tee -a /etc/shells
    chsh -s "$(command -v zsh)" "${USER}"
    sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
-   cp $root_path/zsh/zshrc ~/.zshrc
-   cp $root_path/zsh/dani.zsh-theme ~/.oh-my-zsh/themes/
-   chown $USER:$USER ~/.zshrc 
-   chown -R $USER:$USER ~/.oh-my-zsh
+   cp $root_path/zsh/zshrc $HOME/.zshrc
+   cp $root_path/zsh/dani.zsh-theme $HOME/.oh-my-zsh/themes/
+   chown $USER:$USER $HOME/.zshrc 
+   chown -R $USER:$USER $HOME/.oh-my-zsh
+}
+
+vundle() {
+
+   echo "Installing Vundle..."
+   git clone https://github.com/VundleVim/Vundle.vim.git $HOME/.vim/bundle/Vundle.vim
+   echo "Visit: https://github.com/VundleVim/Vundle.vim"
+   echo "Copying .vimrc config"
+   cp $root_path/vim/vimrc $HOME/.vimrc
+   chown $USER:$USER $HOME/.vimrc
+   echo "Open vim and execute :PluginInstall"
 }
 
 spotify() {
