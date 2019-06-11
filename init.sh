@@ -93,6 +93,7 @@ tools() {
    echo "5. Install tilix and pokemon terminal."
    echo "6. Install Telegram."
    echo "7. Install vundle (vim plugin)."
+   echo "8. Install fzf (historical)."
    read -p "Choose an option: " OPTION
 
    case "$OPTION" in
@@ -133,6 +134,11 @@ tools() {
 		  vundle
 	   ;;
 
+           8)
+		  git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+		  ~/.fzf/install
+	   ;;
+
            *) #fin de las opciones
 
 		   echo "Not valid option!"
@@ -170,6 +176,8 @@ zsh() {
    cp $root_path/zsh/dani.zsh-theme $HOME/.oh-my-zsh/themes/
    chown $USER:$USER $HOME/.zshrc 
    chown -R $USER:$USER $HOME/.oh-my-zsh
+   echo "Now we're going to install the autosuggestions zsh plugin..."
+   git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 }
 
 vundle() {

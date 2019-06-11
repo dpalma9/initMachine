@@ -62,6 +62,9 @@ ZSH_THEME="dani"
 plugins=(
   git
   kubectl
+  helm
+  colored-man-pages
+  zsh-autosuggestions
 )
 
 source $ZSH/oh-my-zsh.sh
