@@ -164,6 +164,11 @@ packages="curl wget apt-transport-https ca-certificates software-properties-comm
 
    echo "Installing packages: $packages"
    sudo apt install -y $packages
+   echo "Now, installing bashtop: "
+   sudo add-apt-repository ppa:bashtop-monitor/bashtop
+   sudo apt update
+   sudo apt install bashtop
+   echo "Visit: https://github.com/aristocratos/bashtop"
 }
 
 zsh() {
