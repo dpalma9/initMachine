@@ -59,10 +59,10 @@ custom() {
 
            2)
 		echo "WARNING: Need to install gnome-themes-standard package. Installing..."
-		apt install gnome-themes-standard
+		sudo apt install gnome-themes-standard
 		xarcV=1.4.7
 		wget https://gitlab.com/LinxGem33/X-Arc-White/uploads/26bccc81678392584149afa3167f8e78/osx-arc-collection_"$xarcV"_amd64.deb
-                dpkg -i $root_path/osx-arc-collection_"$xarcV"_amd64.deb
+                sudo dpkg -i $root_path/osx-arc-collection_"$xarcV"_amd64.deb
 		rm -rf $root_path/osx-arc-collection_"$xarcV"_amd64.deb
 	   ;;
 
@@ -103,6 +103,7 @@ tools() {
 
            2) 
 		   zsh
+		   custom_zsh
 	   ;;
 
            3)
@@ -159,7 +160,7 @@ gChrome() {
 }
 
 basic() {
-packages="curl wget vim vim-gnome apt-transport-https ca-certificates software-properties-common gitk"
+packages="curl wget apt-transport-https ca-certificates software-properties-common gitk"
 
    echo "Installing packages: $packages"
    sudo apt install -y $packages
@@ -172,6 +173,11 @@ zsh() {
    command -v zsh | sudo tee -a /etc/shells
    chsh -s "$(command -v zsh)" "${USER}"
    sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+}
+
+custom_zsh() {
+
+   echo "Starting customizing zsh"
    cp $root_path/zsh/zshrc $HOME/.zshrc
    cp $root_path/zsh/dani.zsh-theme $HOME/.oh-my-zsh/themes/
    chown $USER:$USER $HOME/.zshrc 
