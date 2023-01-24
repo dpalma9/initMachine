@@ -104,6 +104,7 @@ alias deploys='kubectl get deployments'
 # Docker alias
 alias docker_none='docker rmi $(docker images --filter "dangling=true" -q --no-trunc)'
 alias docker_exit='docker ps -a | grep Exit | cut -d " " -f 1 | xargs docker rm'
+alias docker_prune='docker system prune -af'
 
 # Otros alias
 alias busca='find . -name'
