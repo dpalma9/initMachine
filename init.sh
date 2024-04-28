@@ -104,6 +104,7 @@ tools() {
            2) 
 		   zsh
 		   custom_zsh
+           install_powerlevel10k
 	   ;;
 
            3)
@@ -189,6 +190,21 @@ custom_zsh() {
    chown -R $USER:$USER $HOME/.oh-my-zsh
    echo "Now we're going to install the autosuggestions zsh plugin..."
    git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+   echo "Now we're going to install the zsh-syntax-highlighting zsh plugin..."
+   git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+   echo "Instaling exa. Take a look to their website: https://the.exa.website/"
+   sudo apt install exa
+}
+
+install_powerlevel10k() {
+    read -p "Do you want to install powerlevel10k? (y/n)" confirm
+    if [[ $confirm == [yY] ]]
+    then
+        git clone https://github.com/romkatv/powerlevel10k.git $ZSH_CUSTOM/themes/powerlevel10k
+        echo "Install fonts before configure powerlevel10k."
+        echo "Visit https://github.com/romkatv/powerlevel10k/blob/master/font.md#manual-font-installation"
+        echo "Now type 'p10k configure' to configure powerlevel10k"
+    fi
 }
 
 vundle() {

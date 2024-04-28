@@ -9,6 +9,7 @@
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
 #ZSH_THEME="robbyrussell"
 ZSH_THEME="dani"
+#ZSH_THEME="powerlevel10k/powerlevel10k"
 
 # Set list of themes to load
 # Setting this variable when ZSH_THEME=random
@@ -65,6 +66,7 @@ plugins=(
   helm
   colored-man-pages
   zsh-autosuggestions
+  zsh-syntax-highlighting
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -117,6 +119,12 @@ alias refresh_git='git config credential.helper store'
 # Autojump --> https://github.com/wting/autojump
 . /usr/share/autojump/autojump.sh
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# exa --> https://the.exa.website/
+if [ -x "$(command -v exa)" ]; then
+    alias ls="exa"
+    alias la="exa --long --all --group"
+fi
 
 # On start
 neofetch
