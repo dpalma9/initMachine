@@ -1,8 +1,15 @@
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-  export ZSH=/home/$USER/.oh-my-zsh
+export ZSH=/home/$USER/.oh-my-zsh
 
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-zsh is loaded.
@@ -99,9 +106,10 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-#Kubernetes alias
-alias pods='kubectl get pods'
-alias deploys='kubectl get deployments'
+
+# Kubectl completion
+compdef _kubectl kubectl
+alias  k='kubectl'; complete -o default -F __start_kubectl k;
 
 # Docker alias
 alias docker_none='docker rmi $(docker images --filter "dangling=true" -q --no-trunc)'
@@ -118,14 +126,47 @@ alias refresh_git='git config credential.helper store'
 
 # Autojump --> https://github.com/wting/autojump
 . /usr/share/autojump/autojump.sh
+
+# ---- FZF -----
+# fzf --> https://github.com/junegunn/fzf?tab=readme-ov-file#setting-up-shell-integration
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+#eval "$(fzf --zsh)"
+
+# Usage examples:
+# $ fzf #to search
+# $ <code editor> + Ctrl+T #to look for the file
+# cd** + Tab #to look for the directory
+#  you can use ** with all kind of commands: code, vim, cd, ssh, exxport, alias, etc
+
+# fzf + bat
+show_file_or_dir_preview="if [ -d {} ]; then exa --tree --color=always {} | head -200; else batcat -n --color=always --line-range :500 {}; fi"
+export FZF_CTRL_T_OPTS="--preview '$show_file_or_dir_preview'"
+export FZF_ALT_C_OPTS="--preview 'exa --tree --color=always {} | head -200'"
+
+# Advanced customization of fzf options via _fzf_comprun function
+# - The first argument to the function is the name of the command.
+# - You should make sure to pass the rest of the arguments to fzf.
+_fzf_comprun() {
+  local command=$1
+  shift
+
+  case "$command" in
+    cd)           fzf --preview 'exa --tree --color=always {} | head -200' "$@" ;;
+    export|unset) fzf --preview "eval 'echo \${}'"         "$@" ;;
+    ssh)          fzf --preview 'dig {}'                   "$@" ;;
+    *)            fzf --preview "$show_file_or_dir_preview" "$@" ;;
+  esac
+}
 
 # exa --> https://the.exa.website/
 if [ -x "$(command -v exa)" ]; then
-    alias ls="exa"
+    alias ls="exa --color=always --long --no-filesize --icons --no-time --no-user --no-permissions"
     alias la="exa --long --all --group"
 fi
 
 # On start
 neofetch
 apropos -s 1 "" | shuf -n 1
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh

@@ -93,7 +93,8 @@ tools() {
    echo "5. Install tilix and pokemon terminal."
    echo "6. Install Telegram."
    echo "7. Install vundle (vim plugin)."
-   echo "8. Install fzf (historical)."
+   echo "8. Install utils: fzf, bat, exa."
+   echo "9. Kubernetes utils: kubectx, kubens, k9s."
    read -p "Choose an option: " OPTION
 
    case "$OPTION" in
@@ -137,8 +138,10 @@ tools() {
 	   ;;
 
            8)
-		  git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
-		  ~/.fzf/install
+           utils
+	   ;;
+           9)
+		  kubernetes
 	   ;;
 
            *) #fin de las opciones
@@ -192,8 +195,16 @@ custom_zsh() {
    git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
    echo "Now we're going to install the zsh-syntax-highlighting zsh plugin..."
    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
-   echo "Instaling exa. Take a look to their website: https://the.exa.website/"
-   sudo apt install exa
+}
+
+utils() {
+    echo "Installing fzf..."
+    git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+	~/.fzf/install
+    echo "Installing bat..."
+    sudo apt install 
+    echo "Instaling exa. Take a look to their website: https://the.exa.website/"
+    sudo apt install exa
 }
 
 install_powerlevel10k() {
@@ -205,6 +216,7 @@ install_powerlevel10k() {
         echo "Visit https://github.com/romkatv/powerlevel10k/blob/master/font.md#manual-font-installation"
         echo "Now type 'p10k configure' to configure powerlevel10k"
     fi
+    cp $root_path/zsh/p10k.zsh $HOME/.p10k.zsh
 }
 
 vundle() {
@@ -236,6 +248,19 @@ gnomeTool() {
   echo "Don't forget to install the necessary plugin in Firefox or Chrome to install plugins."
   sleep 2
   echo "Visit $guide"
+}
+
+kubernetes() {
+    echo "Installing kubectx and kubens..."
+    sudo git clone https://github.com/ahmetb/kubectx /opt/kubectx
+    sudo ln -s /opt/kubectx/kubectx /usr/local/bin/kubectx
+    sudo ln -s /opt/kubectx/kubens /usr/local/bin/kubens
+    echo "Installing k9s..."
+    echo "Go to: https://github.com/derailed/k9s/releases"
+    echo "Download your package."
+    echo "If you are on Debian, download the .deb package and install it:"
+    echo "sudo dpkg -i k9s_linux_amd64.deb"
+    sleep 10
 }
 
 #**************
