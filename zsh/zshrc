@@ -159,6 +159,8 @@ _fzf_comprun() {
 }
 
 # exa --> https://the.exa.website/
+# exa is deprecated! Use eza: https://github.com/eza-community/eza/
+# TODO update exa references
 if [ -x "$(command -v exa)" ]; then
     alias ls="exa --color=always --long --no-filesize --icons --no-time --no-user --no-permissions"
     alias la="exa --long --all --group"
