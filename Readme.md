@@ -29,5 +29,11 @@ Usage:
 ansible-playbook playbook.yml -b -t my_tag1,mytag2
 ```
 
+Extra notes
+----
+To configure KDE Connect over ethernet:
 
-
+```bash
+sudo iptables -A INPUT -p tcp --dport 1714:1764 -j ACCEPT
+sudo iptables -A INPUT -p udp --dport 1714:1764 -j ACCEPT 
+```
