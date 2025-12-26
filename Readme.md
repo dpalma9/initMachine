@@ -37,3 +37,6 @@ To configure KDE Connect over ethernet:
 sudo iptables -A INPUT -p tcp --dport 1714:1764 -j ACCEPT
 sudo iptables -A INPUT -p udp --dport 1714:1764 -j ACCEPT 
 ```
+## Another projects and configs
+### Fastfetch
+Install fastfetch and check a cool configuration on this [project](https://github.com/menhoudj/my-fastfetch-config).
