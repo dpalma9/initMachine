@@ -49,6 +49,8 @@
 # resize-overlay-duration = 4s 200ms
 shell-integration = zsh
 theme = "dark:Catppuccin Mocha,light:Catppuccin Frappe"
+background-opacity = 0.9
+font-family = "MesloLGS NF"
 
 # keybindings
 keybind = ctrl+r=reload_config
